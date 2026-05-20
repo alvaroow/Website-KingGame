@@ -3,20 +3,6 @@
 @section('title', 'KingGame - PS Rental Terbaik')
 
 @section('content')
-<!-- Animated Background Full Page -->
-<div class="bg-animated"></div>
-
-<!-- Bubbles -->
-@for($i = 0; $i < 10; $i++)
-    <div class="bubble" style="
-        left: {{ rand(0, 100) }}%;
-        width: {{ rand(20, 60) }}px;
-        height: {{ rand(20, 60) }}px;
-        animation-delay: {{ rand(0, 12) }}s;
-        animation-duration: {{ rand(8, 16) }}s;
-    "></div>
-@endfor
-
 <!-- Hero Section -->
 <section class="relative pt-24 md:pt-32 pb-16 md:pb-20 px-4 overflow-hidden bg-transparent">
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(59,130,246,0.12),_transparent_30%)]"></div>
@@ -39,7 +25,7 @@
                     Booking sekarang, pilih PS3, PS4, atau PS5, dan nikmati sesi game seru dalam ruangan nyaman dengan tampilan profesional.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="#devices" class="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-sm font-semibold text-white shadow-lg animate-glow transition hover:bg-blue-700">
+                    <a href="{{ route('booking.choose') }}" class="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-sm font-semibold text-white shadow-lg animate-glow transition hover:bg-blue-700">
                         Booking Sekarang
                     </a>
                     <a href="#devices" class="inline-flex items-center justify-center rounded-full border border-sky-200 bg-white px-8 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50">
@@ -65,8 +51,8 @@
                 </div>
             </div>
 
-            <!-- Gambar Kanan -->
-            <div class="lg:w-1/2 relative min-h-[500px]"
+            <!-- Gambar Kanan - HANYA DESKTOP -->
+            <div class="hidden lg:block lg:w-1/2 relative min-h-[500px]"
                  data-aos="fade-left" data-aos-duration="800">
                 <div class="relative overflow-hidden rounded-2xl bg-white shadow-xl w-[72%] ml-auto lg:ml-0 lg:mr-0 lg:-mt-8 tilt-card">
                     <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80" 
@@ -103,36 +89,77 @@
             <p class="mt-4 text-slate-600">PS3, PS4, PS5 tersedia dengan setup bersih dan profesional untuk sesi santai atau kompetitif.</p>
         </div>
 
-        @php 
-        $featuredDevices = [
-            ['name' => 'PlayStation 5', 'description' => 'PS5 next-gen dengan grafis memukau dan loading super cepat', 'price_per_hour' => 35000],
-            ['name' => 'PlayStation 4', 'description' => 'PS4 dengan game-game terbaik dan performa handal', 'price_per_hour' => 20000],
-            ['name' => 'PlayStation 3', 'description' => 'PS3 dengan koleksi game klasik yang legendaris', 'price_per_hour' => 10000],
-        ];
-        $deviceImages = [
-            'PlayStation 5' => asset('images/ps4.png'),
-            'PlayStation 4' => asset('images/ps4.png'),
-            'PlayStation 3' => asset('images/ps4.png'),
-        ];
+        @php $featuredDevices = \App\Models\Device::where('status', 'available')->get(); @endphp
+        @php
+            $deviceImages = [
+                'PlayStation 5' => asset('images/ps4.png'),
+                'PlayStation 4' => asset('images/ps4.png'),
+                'PlayStation 3' => asset('images/ps4.png'),
+            ];
         @endphp
-        <div class="grid gap-6 md:grid-cols-3">
+        
+        {{-- MOBILE: 2 card + 1 card di tengah bawah --}}
+        <div class="md:hidden">
+            <div class="grid grid-cols-2 gap-3">
+                @foreach($featuredDevices->take(2) as $index => $device)
+                <div class="rounded-[24px] bg-white p-4 shadow-lg shadow-sky-200/30 border border-sky-100 transition"
+                     data-aos="fade-up" data-aos-delay="{{ $index * 150 }}">
+                    <div class="mb-3 overflow-hidden rounded-[20px]">
+                        <img src="{{ $deviceImages[$device->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $device->name }}" class="h-28 w-full object-cover" />
+                    </div>
+                    <div class="mb-2">
+                        <p class="text-xs uppercase tracking-[0.3em] text-blue-600">Konsol</p>
+                        <h3 class="mt-1 text-lg font-bold text-slate-950">{{ $device->name }}</h3>
+                    </div>
+                    <p class="text-slate-600 text-xs leading-5 line-clamp-2">{{ $device->description }}</p>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="text-sm font-bold text-slate-950">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</span>
+                    </div>
+                    <a href="{{ route('booking.choose') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
+                </div>
+                @endforeach
+            </div>
+            @if($featuredDevices->count() > 2)
+            @php $thirdDevice = $featuredDevices->skip(2)->first(); @endphp
+            <div class="flex justify-center mt-3">
+                <div class="w-[48%] rounded-[24px] bg-white p-4 shadow-lg shadow-sky-200/30 border border-sky-100 transition"
+                     data-aos="fade-up" data-aos-delay="300">
+                    <div class="mb-3 overflow-hidden rounded-[20px]">
+                        <img src="{{ $deviceImages[$thirdDevice->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $thirdDevice->name }}" class="h-28 w-full object-cover" />
+                    </div>
+                    <div class="mb-2">
+                        <p class="text-xs uppercase tracking-[0.3em] text-blue-600">Konsol</p>
+                        <h3 class="mt-1 text-lg font-bold text-slate-950">{{ $thirdDevice->name }}</h3>
+                    </div>
+                    <p class="text-slate-600 text-xs leading-5 line-clamp-2">{{ $thirdDevice->description }}</p>
+                    <div class="mt-3 flex items-center justify-between">
+                        <span class="text-sm font-bold text-slate-950">Rp {{ number_format($thirdDevice->price_per_hour,0,',','.') }}/jam</span>
+                    </div>
+                    <a href="{{ route('booking.choose') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
+                </div>
+            </div>
+            @endif
+        </div>
+
+        {{-- DESKTOP: 3 kolom --}}
+        <div class="hidden md:grid md:grid-cols-3 gap-6">
             @foreach($featuredDevices as $index => $device)
             <div class="rounded-[32px] bg-white p-6 shadow-lg shadow-sky-200/30 border border-sky-100 transition hover:-translate-y-1 tilt-card"
                  data-aos="fade-up" data-aos-delay="{{ $index * 150 }}">
                 <div class="mb-6 overflow-hidden rounded-[28px]">
-                    <img src="{{ $deviceImages[$device['name']] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $device['name'] }}" class="h-40 w-full object-cover transition duration-500 hover:scale-105" />
+                    <img src="{{ $deviceImages[$device->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $device->name }}" class="h-40 w-full object-cover transition duration-500 hover:scale-105" />
                 </div>
                 <div class="mb-4 flex items-center justify-between text-slate-950">
                     <div>
                         <p class="text-sm uppercase tracking-[0.3em] text-blue-600">Konsol</p>
-                        <h3 class="mt-2 text-2xl font-bold">{{ $device['name'] }}</h3>
+                        <h3 class="mt-2 text-2xl font-bold">{{ $device->name }}</h3>
                     </div>
                     <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-950">Ready</span>
                 </div>
-                <p class="text-slate-600 text-sm leading-6">{{ $device['description'] }}</p>
+                <p class="text-slate-600 text-sm leading-6">{{ $device->description }}</p>
                 <div class="mt-6 flex items-center justify-between text-slate-950">
-                    <span class="text-xl font-bold">Rp {{ number_format($device['price_per_hour'],0,',','.') }}/jam</span>
-                    <a href="#devices" class="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Booking</a>
+                    <span class="text-xl font-bold">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</span>
+                    <a href="{{ route('booking.choose') }}" class="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Booking</a>
                 </div>
             </div>
             @endforeach
@@ -149,7 +176,35 @@
             <h2 class="mt-4 text-3xl md:text-4xl font-extrabold text-slate-950">Reservasi Mudah dalam 3 Langkah</h2>
             <p class="mt-4 text-slate-600">Pilih konsol, tentukan waktu, lalu langsung datang untuk sesi gaming yang rapi dan terjadwal.</p>
         </div>
-        <div class="grid gap-6 md:grid-cols-3">
+
+        {{-- MOBILE: 2 card + 1 card di tengah bawah --}}
+        <div class="md:hidden">
+            <div class="grid grid-cols-2 gap-3">
+                <div class="rounded-[24px] border border-blue-100 bg-white p-5 text-center shadow-sm"
+                     data-aos="zoom-in" data-aos-delay="0">
+                    <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-lg font-bold shadow-sm">1</div>
+                    <h3 class="text-base font-semibold text-slate-950">Pilih Konsol</h3>
+                    <p class="mt-2 text-slate-600 text-xs">Temukan PS3, PS4, atau PS5 yang sesuai dengan style gamemu.</p>
+                </div>
+                <div class="rounded-[24px] border border-blue-100 bg-white p-5 text-center shadow-sm"
+                     data-aos="zoom-in" data-aos-delay="200">
+                    <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-lg font-bold shadow-sm">2</div>
+                    <h3 class="text-base font-semibold text-slate-950">Pilih Waktu</h3>
+                    <p class="mt-2 text-slate-600 text-xs">Atur slot main agar perjalananmu jadi lancar.</p>
+                </div>
+            </div>
+            <div class="flex justify-center mt-3">
+                <div class="w-[48%] rounded-[24px] border border-blue-100 bg-white p-5 text-center shadow-sm"
+                     data-aos="zoom-in" data-aos-delay="400">
+                    <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-lg font-bold shadow-sm">3</div>
+                    <h3 class="text-base font-semibold text-slate-950">Main Seru</h3>
+                    <p class="mt-2 text-slate-600 text-xs">Masuk, duduk, dan nikmati pengalaman gaming yang rapi.</p>
+                </div>
+            </div>
+        </div>
+
+        {{-- DESKTOP: 3 kolom --}}
+        <div class="hidden md:grid md:grid-cols-3 gap-6">
             <div class="rounded-[32px] border border-blue-100 bg-white p-8 text-center shadow-sm tilt-card"
                  data-aos="zoom-in" data-aos-delay="0">
                 <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl font-bold shadow-sm">1</div>
@@ -229,14 +284,14 @@
             ['initial' => 'A', 'name' => 'Alya', 'text' => 'Tempat favorit nongkrong sama temen!'],
         ];
         @endphp
-        <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-5">
             @foreach($testimonials as $index => $t)
-            <div class="rounded-[32px] border border-blue-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 tilt-card"
+            <div class="rounded-[24px] md:rounded-[32px] border border-blue-100 bg-white p-4 md:p-6 shadow-sm transition hover:-translate-y-1 tilt-card"
                  data-aos="flip-left" data-aos-delay="{{ $index * 200 }}">
-                <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-lg font-bold shadow-sm">{{ $t['initial'] }}</div>
-                <h4 class="font-semibold text-slate-950 text-lg">{{ $t['name'] }}</h4>
-                <div class="mt-2 flex items-center gap-1 text-yellow-400 text-sm animate-bounce-in">★★★★★</div>
-                <p class="mt-4 text-slate-600 text-sm italic">"{{ $t['text'] }}"</p>
+                <div class="mb-3 md:mb-4 flex h-10 w-10 md:h-14 md:w-14 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-base md:text-lg font-bold shadow-sm mx-auto">{{ $t['initial'] }}</div>
+                <h4 class="font-semibold text-slate-950 text-sm md:text-lg text-center">{{ $t['name'] }}</h4>
+                <div class="mt-1 md:mt-2 flex items-center justify-center gap-1 text-yellow-400 text-xs md:text-sm animate-bounce-in">★★★★★</div>
+                <p class="mt-2 md:mt-4 text-slate-600 text-xs md:text-sm italic text-center">"{{ $t['text'] }}"</p>
             </div>
             @endforeach
         </div>
@@ -249,7 +304,7 @@
     <div class="container mx-auto text-center">
         <h2 class="text-3xl md:text-4xl font-extrabold text-black">Siap Reservasi Sekarang?</h2>
         <p class="mx-auto mt-4 max-w-2xl text-black/90">Booking slotmu sekarang dan nikmati sesi PlayStation dengan tampilan rapi dan warna biru yang segar.</p>
-        <a href="#devices" class="mt-8 inline-flex rounded-full bg-white px-10 py-3 text-sm font-semibold text-blue-600 shadow-xl transition hover:bg-slate-100 animate-glow">
+        <a href="{{ route('booking.choose') }}" class="mt-8 inline-flex rounded-full bg-white px-10 py-3 text-sm font-semibold text-blue-600 shadow-xl transition hover:bg-slate-100 animate-glow">
             Booking Sekarang
         </a>
     </div>
