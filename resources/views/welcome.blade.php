@@ -7,12 +7,6 @@
 <section class="relative pt-24 md:pt-32 pb-16 md:pb-20 px-4 overflow-hidden bg-transparent">
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(59,130,246,0.12),_transparent_30%)]"></div>
     
-    {{-- Floating Elements --}}
-    <div class="absolute top-20 left-10 w-20 h-20 bg-blue-200 rounded-full opacity-40 animate-float"></div>
-    <div class="absolute top-40 right-20 w-16 h-16 bg-sky-300 rounded-full opacity-30 animate-float-delayed"></div>
-    <div class="absolute bottom-20 left-1/3 w-24 h-24 bg-blue-100 rounded-full opacity-50 animate-float-slow"></div>
-    <div class="absolute left-0 top-16 h-64 w-64 rounded-full bg-blue-200 opacity-60 blur-3xl"></div>
-    
     <div class="container mx-auto relative z-10">
         <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
             <!-- Konten Kiri (Text) -->
@@ -55,7 +49,7 @@
             <div class="hidden lg:block lg:w-1/2 relative min-h-[500px]"
                  data-aos="fade-left" data-aos-duration="800">
                 <div class="relative overflow-hidden rounded-2xl bg-white shadow-xl w-[72%] ml-auto lg:ml-0 lg:mr-0 lg:-mt-8 tilt-card">
-                    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80" 
+                    <img src="{{ asset('images/hero.png') }}" 
                          alt="PlayStation lounge" 
                          class="w-full h-48 sm:h-56 object-cover transition duration-500 hover:scale-105" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
@@ -228,13 +222,13 @@
 </section>
 
 <!-- Games Section -->
-<section id="games" class="py-16 md:py-20 px-4 bg-transparent">
+<section id="games" class="py-12 md:py-20 px-3 md:px-4 bg-transparent">
     <div class="container mx-auto">
-        <div class="max-w-3xl mx-auto text-center mb-10"
+        <div class="max-w-3xl mx-auto text-center mb-6 md:mb-10"
              data-aos="fade-up">
-            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Katalog Game</p>
-            <h2 class="mt-4 text-3xl md:text-4xl font-extrabold text-slate-950">Ragam Game PlayStation</h2>
-            <p class="mt-4 text-slate-600">Dari olahraga sampai aksi petualangan — koleksi kami disusun rapi untuk memudahkan pilihanmu.</p>
+            <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Katalog Game</p>
+            <h2 class="mt-2 md:mt-4 text-2xl md:text-4xl font-extrabold text-slate-950">Ragam Game PlayStation</h2>
+            <p class="mt-2 md:mt-4 text-slate-600 text-xs md:text-base">Dari olahraga sampai aksi petualangan — koleksi kami disusun rapi untuk memudahkan pilihanmu.</p>
         </div>
         @php
             $games = [
@@ -246,7 +240,29 @@
                 'Tekken 8' => asset('images/tekken8.png'),
             ];
         @endphp
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        
+        {{-- MOBILE: 2 kolom compact --}}
+        <div class="md:hidden grid grid-cols-2 gap-2">
+            @foreach($games as $title => $image)
+            <div class="overflow-hidden rounded-2xl bg-white shadow-md shadow-blue-200/20 transition"
+                 data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
+                <div class="relative h-28 overflow-hidden">
+                    <img src="{{ $image }}" alt="{{ $title }}" class="h-full w-full object-cover" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-2 left-3 text-white">
+                        <p class="text-sm font-bold">{{ explode(' ', $title)[0] }}</p>
+                        <p class="text-[10px] text-sky-200">{{ substr($title, 2) }}</p>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <p class="text-slate-600 text-[11px] leading-4">Game PlayStation populer untuk sesi seru.</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        {{-- DESKTOP: 3 kolom --}}
+        <div class="hidden md:grid md:gap-5 md:grid-cols-2 lg:grid-cols-3">
             @foreach($games as $title => $image)
             <div class="overflow-hidden rounded-[32px] bg-white shadow-lg shadow-blue-200/30 transition hover:-translate-y-1 tilt-card"
                  data-aos="zoom-in" data-aos-delay="{{ $loop->index * 100 }}">

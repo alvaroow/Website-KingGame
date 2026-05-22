@@ -49,33 +49,7 @@
         .animate-bounce-in {
             animation: bounceIn 0.6s ease-out;
         }
-        
-        /* Floating */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-        .animate-float-delayed {
-            animation: float 6s ease-in-out 2s infinite;
-        }
-        .animate-float-slow {
-            animation: float 8s ease-in-out 1s infinite;
-        }
-        
-        /* Scroll Progress Bar */
-        #scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(to right, #2563eb, #7c3aed);
-            z-index: 9999;
-            transition: width 0.1s ease;
-        }
-        
+    
         /* Tilt Effect */
         .tilt-card {
             transition: transform 0.1s ease;
@@ -83,48 +57,7 @@
             perspective: 1000px;
         }
 
-        /* Background Animasi Bergerak - Full Page */
-        .bg-animated {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #eff6ff, #dbeafe, #bfdbfe, #93c5fd, #60a5fa);
-            background-size: 400% 400%;
-            animation: gradientBG 8s ease infinite;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Bubbles */
-        .bubble {
-            position: fixed;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            z-index: -1;
-            animation: rise 15s infinite;
-        }
-
-        @keyframes rise {
-            0% {
-                bottom: -100px;
-                transform: translateX(0) scale(1);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                bottom: 110%;
-                transform: translateX(100px) scale(0.5);
-                opacity: 0;
-            }
-        }
+       
     </style>
     @stack('styles')
 </head>
@@ -132,19 +65,6 @@
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
 
-    <!-- Animated Background -->
-    <div class="bg-animated"></div>
-
-    <!-- Bubbles -->
-    @for($i = 0; $i < 8; $i++)
-        <div class="bubble" style="
-            left: {{ rand(5, 95) }}%;
-            width: {{ rand(30, 80) }}px;
-            height: {{ rand(30, 80) }}px;
-            animation-delay: {{ rand(0, 10) }}s;
-            animation-duration: {{ rand(10, 20) }}s;
-        "></div>
-    @endfor
 
     <!-- Navbar -->
     <header x-data="{ open: false }" class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
@@ -242,33 +162,6 @@
         document.querySelectorAll('.counter').forEach(el => observer.observe(el));
     </script>
 
-    <!-- Scroll Progress -->
-    <script>
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (scrollTop / docHeight) * 100;
-            document.getElementById('scroll-progress').style.width = progress + '%';
-        });
-    </script>
-
-    <!-- Tilt Effect -->
-    <script>
-        document.querySelectorAll('.tilt-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 10;
-                const rotateY = (centerX - x) / 10;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-            });
-        });
     </script>
 
     @stack('scripts')
