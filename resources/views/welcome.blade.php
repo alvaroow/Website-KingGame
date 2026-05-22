@@ -13,13 +13,13 @@
             <div class="lg:w-1/2 space-y-6 lg:pr-4"
                  data-aos="fade-right" data-aos-duration="800">
                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-950">
-                    Destinasi Gaming PlayStation yang Rapi dan Kekinian
+                    Destinasi Gaming PlayStation yang Nyaman dan Modern
                 </h1>
                 <p class="text-slate-600 text-base sm:text-lg leading-8 max-w-xl">
-                    Booking sekarang, pilih PS3, PS4, atau PS5, dan nikmati sesi game seru dalam ruangan nyaman dengan tampilan profesional.
+                    Booking sekarang, pilih konsol favoritmu, dan nikmati sesi game seru dalam ruangan nyaman dengan tampilan profesional.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="{{ route('booking.choose') }}" class="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-sm font-semibold text-white shadow-lg animate-glow transition hover:bg-blue-700">
+                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-sm font-semibold text-white shadow-lg animate-glow transition hover:bg-blue-700">
                         Booking Sekarang
                     </a>
                     <a href="#devices" class="inline-flex items-center justify-center rounded-full border border-sky-200 bg-white px-8 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-50">
@@ -109,7 +109,7 @@
                     <div class="mt-3 flex items-center justify-between">
                         <span class="text-sm font-bold text-slate-950">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</span>
                     </div>
-                    <a href="{{ route('booking.choose') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
+                    <a href="{{ route('login') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
                 </div>
                 @endforeach
             </div>
@@ -129,7 +129,7 @@
                     <div class="mt-3 flex items-center justify-between">
                         <span class="text-sm font-bold text-slate-950">Rp {{ number_format($thirdDevice->price_per_hour,0,',','.') }}/jam</span>
                     </div>
-                    <a href="{{ route('booking.choose') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
+                    <a href="{{ route('login') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
                 </div>
             </div>
             @endif
@@ -141,7 +141,6 @@
             <div class="rounded-[32px] bg-white p-6 shadow-lg shadow-sky-200/30 border border-sky-100 transition hover:-translate-y-1 tilt-card"
                  data-aos="fade-up" data-aos-delay="{{ $index * 150 }}">
                 <div class="mb-6 overflow-hidden rounded-[28px]">
-                    <img src="{{ $deviceImages[$device->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $device->name }}" class="h-40 w-full object-cover transition duration-500 hover:scale-105" />
                 </div>
                 <div class="mb-4 flex items-center justify-between text-slate-950">
                     <div>
@@ -153,7 +152,7 @@
                 <p class="text-slate-600 text-sm leading-6">{{ $device->description }}</p>
                 <div class="mt-6 flex items-center justify-between text-slate-950">
                     <span class="text-xl font-bold">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</span>
-                    <a href="{{ route('booking.choose') }}" class="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Booking</a>
+                    <a href="{{ route('login') }}" class="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">Booking</a>
                 </div>
             </div>
             @endforeach
@@ -178,7 +177,7 @@
                      data-aos="zoom-in" data-aos-delay="0">
                     <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-lg font-bold shadow-sm">1</div>
                     <h3 class="text-base font-semibold text-slate-950">Pilih Konsol</h3>
-                    <p class="mt-2 text-slate-600 text-xs">Temukan PS3, PS4, atau PS5 yang sesuai dengan style gamemu.</p>
+                    <p class="mt-2 text-slate-600 text-xs">Temukan konsol yang sesuai dengan style gamemu.</p>
                 </div>
                 <div class="rounded-[24px] border border-blue-100 bg-white p-5 text-center shadow-sm"
                      data-aos="zoom-in" data-aos-delay="200">
@@ -289,7 +288,7 @@
         <div class="max-w-3xl mx-auto text-center mb-10"
              data-aos="fade-up">
             <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Testimoni</p>
-            <h2 class="mt-4 text-3xl md:text-4xl font-extrabold text-slate-950">Apa Kata Gamer tentang KingGame</h2>
+            <h2 class="mt-4 text-3xl md:text-4xl font-extrabold text-slate-950">Apa Kata Mereka tentang KingGame</h2>
             <p class="mt-4 text-slate-600">Dengar langsung pengalaman mereka yang sudah main di sini.</p>
         </div>
         @php
@@ -319,8 +318,8 @@
          data-aos="fade-up" data-aos-duration="1000">
     <div class="container mx-auto text-center">
         <h2 class="text-3xl md:text-4xl font-extrabold text-black">Siap Reservasi Sekarang?</h2>
-        <p class="mx-auto mt-4 max-w-2xl text-black/90">Booking slotmu sekarang dan nikmati sesi PlayStation dengan tampilan rapi dan warna biru yang segar.</p>
-        <a href="{{ route('booking.choose') }}" class="mt-8 inline-flex rounded-full bg-white px-10 py-3 text-sm font-semibold text-blue-600 shadow-xl transition hover:bg-slate-100 animate-glow">
+        <p class="mx-auto mt-4 max-w-2xl text-black/90">Booking slotmu sekarang dan nikmati sesi PlayStationmu dengan nyaman dan menyenangkan.</p>
+        <a href="{{ route('login') }}" class="mt-8 inline-flex rounded-full bg-white px-10 py-3 text-sm font-semibold text-blue-600 shadow-xl transition hover:bg-slate-100 animate-glow">
             Booking Sekarang
         </a>
     </div>

@@ -1,52 +1,107 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('layouts.gaming')
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+@section('title', 'Daftar - KingGame')
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+<section class="relative pt-24 md:pt-28 pb-16 px-4 bg-transparent min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full">
+        {{-- Logo & Header --}}
+        <div class="text-center mb-8"
+             data-aos="fade-down" data-aos-duration="600">
+            <a href="/" class="text-3xl md:text-4xl font-extrabold text-blue-600">
+                KING<span class="text-gray-900">GAME</span>
             </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+            <p class="text-gray-500 mt-2 text-sm">Buat akun baru untuk booking PlayStation</p>
         </div>
-    </form>
-</x-guest-layout>
+
+        {{-- Card Register --}}
+        <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm"
+             data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+
+            {{-- Error Messages --}}
+            @if($errors->any())
+                <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                    @foreach($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            <form action="{{ route('register') }}" method="POST">
+                @csrf
+
+                <div class="space-y-4">
+                    {{-- Name --}}
+                    <div>
+                        <label class="block text-gray-700 text-xs md:text-sm font-medium mb-1">Nama Lengkap</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                            </span>
+                            <input type="text" name="name" value="{{ old('name') }}" required
+                                   class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm"
+                                   placeholder="Nama kamu">
+                        </div>
+                    </div>
+
+                    {{-- Email --}}
+                    <div>
+                        <label class="block text-gray-700 text-xs md:text-sm font-medium mb-1">Email</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89a2 2 0 002.828 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </span>
+                            <input type="email" name="email" value="{{ old('email') }}" required
+                                   class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm"
+                                   placeholder="nama@email.com">
+                        </div>
+                    </div>
+
+                    {{-- Password --}}
+                    <div>
+                        <label class="block text-gray-700 text-xs md:text-sm font-medium mb-1">Password</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            </span>
+                            <input type="password" name="password" required
+                                   class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm"
+                                   placeholder="Minimal 8 karakter">
+                        </div>
+                    </div>
+
+                    {{-- Confirm Password --}}
+                    <div>
+                        <label class="block text-gray-700 text-xs md:text-sm font-medium mb-1">Konfirmasi Password</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            </span>
+                            <input type="password" name="password_confirmation" required
+                                   class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm"
+                                   placeholder="Ulangi password">
+                        </div>
+                    </div>
+
+                    {{-- Submit --}}
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition shadow-md text-sm animate-glow">
+                        Daftar
+                    </button>
+                </div>
+            </form>
+
+            {{-- Login Link --}}
+            <p class="text-center text-gray-500 text-sm mt-6">
+                Sudah punya akun?
+                <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-700 font-semibold">Masuk sekarang</a>
+            </p>
+        </div>
+
+        {{-- Back to Home --}}
+        <div class="text-center mt-6">
+            <a href="/" class="text-gray-400 hover:text-blue-600 transition text-sm flex items-center justify-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                Kembali ke Beranda
+            </a>
+        </div>
+    </div>
+</section>
