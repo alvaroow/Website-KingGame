@@ -15,23 +15,28 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Proses Login
+    //Proses Login
     public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+    if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
+        $request->session()->regenerate();
+        
+        if (Auth::user()->is_admin) {
+            return redirect('/admin/dashboard');
         }
-
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
+        
+        return redirect('/dashboard');
     }
+
+    return back()->withErrors([
+        'email' => 'Email atau password salah.',
+    ])->onlyInput('email');
+}
 
     // Halaman Register
     public function showRegister()

@@ -203,3 +203,53 @@ Route::get('/dashboard', function () {
         return back()->with('success', 'Profil berhasil diupdate!');
     })->name('profile.update');
 });
+
+// Admin Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    
+    // Dashboard Admin
+    Route::get('/dashboard', function () {
+        $totalBookings = Booking::count();
+        $totalDevices = Device::count();
+        $totalUsers = \App\Models\User::where('is_admin', false)->count();
+        $bookings = Booking::with('device')->latest()->paginate(10);
+        return view('admin.dashboard', compact('totalBookings', 'totalDevices', 'totalUsers', 'bookings'));
+    })->name('dashboard');
+    
+    // CRUD Konsol
+    Route::get('/devices', function () {
+        $devices = Device::all();
+        return view('admin.devices.index', compact('devices'));
+    })->name('devices.index');
+    
+    Route::get('/devices/create', function () {
+        return view('admin.devices.create');
+    })->name('devices.create');
+    
+    Route::post('/devices', function (Request $request) {
+        $request->validate([
+            'name' => 'required',
+            'price_per_hour' => 'required|integer',
+            'stock' => 'required|integer',
+            'description' => 'nullable',
+        ]);
+        Device::create($request->all());
+        return redirect()->route('admin.devices.index')->with('success', 'Konsol ditambahkan!');
+    })->name('devices.store');
+    
+    Route::get('/devices/{device}/edit', function ($device) {
+        $device = Device::findOrFail($device);
+        return view('admin.devices.edit', compact('device'));
+    })->name('devices.edit');
+    
+    Route::put('/devices/{device}', function (Request $request, $device) {
+        $device = Device::findOrFail($device);
+        $device->update($request->all());
+        return redirect()->route('admin.devices.index')->with('success', 'Konsol diupdate!');
+    })->name('devices.update');
+    
+    Route::delete('/devices/{device}', function ($device) {
+        Device::findOrFail($device)->delete();
+        return back()->with('success', 'Konsol dihapus!');
+    })->name('devices.destroy');
+});
