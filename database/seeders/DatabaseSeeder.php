@@ -25,6 +25,5 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(DeviceSeeder::class);
-        $this->call(BookingSeeder::class);
-    }
+            }
 }

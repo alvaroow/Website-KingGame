@@ -6,19 +6,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'KingGame - PS Rental')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- AOS Animation CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>    
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    `
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
         }
         h1, h2 { 
-            font-family: 'Montserrat', sans-serif; 
+            h1 { font-family: 'Press Start 2P', cursive; font-size: 1.5rem; }
         }
         h3, h4 { 
             font-family: 'Space Grotesk', sans-serif; 

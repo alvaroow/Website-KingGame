@@ -10,7 +10,7 @@ class Device extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'type', 'price_per_hour', 'description', 'image', 'status'
+        'name', 'type', 'price_per_hour', 'stock', 'description', 'image', 'status'
     ];
 
     public function bookings()

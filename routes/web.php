@@ -33,16 +33,54 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 // ==========================================
 Route::middleware(['auth'])->group(function () {
     
-    // Dashboard (READ)
-    Route::get('/dashboard', function () {
-        $user = auth()->user();
-        $bookings = Booking::where('user_id', $user->id)
-            ->orWhere('email', $user->email)
-            ->latest()
-            ->get();
-        return view('dashboard', compact('user', 'bookings'));
-    })->name('dashboard');
 
+// Dashboard
+Route::get('/dashboard', function () {
+    $user = auth()->user();
+    
+    $bookings = Booking::where('user_id', $user->id)
+        ->orWhere('email', $user->email)
+        ->latest()
+        ->get();
+    
+    $now = Carbon::now();
+    
+    foreach ($bookings as $booking) {
+        // Ambil date, start_time, end_time dengan aman
+        $dateString = $booking->date instanceof \Carbon\Carbon 
+            ? $booking->date->format('Y-m-d') 
+            : $booking->date;
+        
+        $startString = $booking->start_time instanceof \Carbon\Carbon 
+            ? $booking->start_time->format('H:i:s') 
+            : $booking->start_time;
+            
+        $endString = $booking->end_time instanceof \Carbon\Carbon 
+            ? $booking->end_time->format('H:i:s') 
+            : $booking->end_time;
+        
+        $startDateTime = Carbon::parse($dateString . ' ' . $startString);
+        $endDateTime = Carbon::parse($dateString . ' ' . $endString);
+        
+        // Cek apakah sedang berlangsung
+        if ($booking->status == 'pending' && $now->between($startDateTime, $endDateTime)) {
+            $booking->update(['status' => 'active']);
+        }
+        
+        // Cek apakah sudah selesai
+        if (in_array($booking->status, ['pending', 'active']) && $endDateTime->isPast()) {
+            $booking->update(['status' => 'completed']);
+        }
+    }
+    
+    // Refresh data
+    $bookings = Booking::where('user_id', $user->id)
+        ->orWhere('email', $user->email)
+        ->latest()
+        ->get();
+    
+    return view('dashboard', compact('user', 'bookings'));
+})->name('dashboard');
     // Pilih Konsol
     Route::get('/booking', function () {
         $devices = Device::where('status', 'available')->get();
@@ -76,21 +114,21 @@ Route::middleware(['auth'])->group(function () {
         $duration = (int) $request->duration;
         $endTime = $startTime->copy()->addHours($duration);
         
-        // Cek slot (anti-bentrok)
-        $existing = Booking::where('device_id', $device->id)
+        // Cek slot (dengan stok)
+        $bookedCount = Booking::where('device_id', $device->id)
             ->where('date', $request->date)
             ->where('status', '!=', 'cancelled')
             ->where(function($q) use ($startTime, $endTime) {
                 $q->whereBetween('start_time', [$startTime, $endTime])
-                  ->orWhereBetween('end_time', [$startTime, $endTime])
-                  ->orWhere(function($q2) use ($startTime, $endTime) {
-                      $q2->where('start_time', '<=', $startTime)
-                         ->where('end_time', '>=', $endTime);
-                  });
-            })->exists();
+                ->orWhereBetween('end_time', [$startTime, $endTime])
+                ->orWhere(function($q2) use ($startTime, $endTime) {
+                    $q2->where('start_time', '<=', $startTime)
+                        ->where('end_time', '>=', $endTime);
+                });
+            })->count();
 
-        if ($existing) {
-            return back()->with('error', 'Slot tidak tersedia! Silakan pilih waktu lain.')->withInput();
+        if ($bookedCount >= $device->stock) {
+            return back()->with('error', 'Slot penuh! Stok: ' . $device->stock . ' unit, sudah dibooking: ' . $bookedCount)->withInput();
         }
 
         $booking = Booking::create([
@@ -109,7 +147,7 @@ Route::middleware(['auth'])->group(function () {
             'status' => 'pending',
         ]);
 
-        return redirect('/dashboard')->with('success', '✅ Booking berhasil!');
+        return redirect('/dashboard')->with('success', 'Booking berhasil!');
     })->name('booking.store');
 
     // Edit Booking (UPDATE)
@@ -136,17 +174,18 @@ Route::middleware(['auth'])->group(function () {
             'start_time' => $startTime->format('H:i:s'),
             'end_time' => $endTime->format('H:i:s'),
             'duration' => (int)$request->duration,
+            'total_price' => $booking->device->price_per_hour * (int)$request->duration,
             'notes' => $request->notes,
         ]);
         
-        return redirect('/dashboard')->with('success', '✅ Booking berhasil diupdate!');
+        return redirect('/dashboard')->with('success', 'Booking berhasil diupdate!');
     })->name('booking.update');
 
     // Cancel Booking (DELETE)
     Route::delete('/booking/{booking}', function ($booking) {
         $booking = Booking::findOrFail($booking);
         $booking->update(['status' => 'cancelled']);
-        return redirect('/dashboard')->with('success', '✅ Booking dibatalkan!');
+        return redirect('/dashboard')->with('success', 'Booking dibatalkan!');
     })->name('booking.cancel');
 
 
@@ -161,6 +200,6 @@ Route::middleware(['auth'])->group(function () {
             'email' => 'required|email|unique:users,email,' . auth()->id(),
         ]);
         auth()->user()->update($request->only('name', 'email'));
-        return back()->with('success', '✅ Profil berhasil diupdate!');
+        return back()->with('success', 'Profil berhasil diupdate!');
     })->name('profile.update');
 });

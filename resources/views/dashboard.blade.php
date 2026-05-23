@@ -48,7 +48,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="px-2 py-1 text-xs rounded-full 
-                                    @if($booking->status == 'confirmed') bg-green-100 text-green-700
+                                    @if($booking->status == 'completed') bg-green-100 text-green-700
                                     @elseif($booking->status == 'pending') bg-yellow-100 text-yellow-700
                                     @elseif($booking->status == 'cancelled') bg-red-100 text-red-700
                                     @else bg-blue-100 text-blue-700 @endif">

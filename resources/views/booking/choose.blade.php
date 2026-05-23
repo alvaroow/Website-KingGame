@@ -2,10 +2,6 @@
 
 @section('title', 'Pilih Konsol')
 
-@section('content')
-<div class="bg-animated"></div>
-
-
 <section class="relative pt-24 md:pt-28 pb-16 px-4 bg-transparent min-h-screen">
     <div class="max-w-4xl mx-auto">
         <div class="text-center mb-8"
@@ -33,6 +29,7 @@
                         <img src="{{ $deviceImages[$device->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $device->name }}" class="w-full h-full object-cover" />
                     </div>
                     <h3 class="text-sm font-bold text-gray-900">{{ $device->name }}</h3>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Stok: {{ $device->stock }} unit</p>
                     <p class="text-blue-600 font-semibold text-xs mt-1">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</p>
                 </a>
                 @endforeach
@@ -47,6 +44,7 @@
                         <img src="{{ $deviceImages[$thirdDevice->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $thirdDevice->name }}" class="w-full h-full object-cover" />
                     </div>
                     <h3 class="text-sm font-bold text-gray-900">{{ $thirdDevice->name }}</h3>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Stok: {{ $thirdDevice->stock }} unit</p>
                     <p class="text-blue-600 font-semibold text-xs mt-1">Rp {{ number_format($thirdDevice->price_per_hour,0,',','.') }}/jam</p>
                 </a>
             </div>
@@ -67,6 +65,9 @@
                     <h3 class="mt-2 text-2xl font-bold text-gray-900">{{ $device->name }}</h3>
                 </div>
                 <p class="text-gray-500 text-xs mt-1">{{ $device->description }}</p>
+                <div class="flex items-center justify-center gap-2 mt-2">
+                    <span class="text-xs text-gray-400">Stok: {{ $device->stock }} unit</span>
+                </div>
                 <p class="text-blue-600 font-semibold text-xl mt-3">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</p>
                 <span class="mt-3 inline-block bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-semibold">Pilih</span>
             </a>
@@ -78,4 +79,3 @@
         </div>
     </div>
 </section>
-@endsection

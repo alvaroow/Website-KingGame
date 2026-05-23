@@ -29,7 +29,7 @@
                 <div class="grid grid-cols-3 gap-4 text-center text-sm text-slate-700">
                     <div class="rounded-3xl bg-white/80 backdrop-blur-sm px-4 py-4 shadow-sm"
                          data-aos="zoom-in" data-aos-delay="200">
-                        <p class="text-2xl font-bold text-slate-950 counter" data-target="50">0+</p>
+                        <p class="text-2xl font-bold text-slate-950 counter" data-target="20">0+</p>
                         <p class="mt-1">Game</p>
                     </div>
                     <div class="rounded-3xl bg-white/80 backdrop-blur-sm px-4 py-4 shadow-sm"
@@ -99,14 +99,17 @@
                 <div class="rounded-[24px] bg-white p-4 shadow-lg shadow-sky-200/30 border border-sky-100 transition"
                      data-aos="fade-up" data-aos-delay="{{ $index * 150 }}">
                     <div class="mb-3 overflow-hidden rounded-[20px]">
-                        <img src="{{ $deviceImages[$device->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $device->name }}" class="h-28 w-full object-cover" />
+                        <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="h-28 w-full object-cover" />
                     </div>
                     <div class="mb-2">
                         <p class="text-xs uppercase tracking-[0.3em] text-blue-600">Konsol</p>
                         <h3 class="mt-1 text-lg font-bold text-slate-950">{{ $device->name }}</h3>
                     </div>
                     <p class="text-slate-600 text-xs leading-5 line-clamp-2">{{ $device->description }}</p>
-                    <div class="mt-3 flex items-center justify-between">
+                    <div class="mt-1 flex items-center gap-2">
+                        <span class="text-[10px] text-gray-400">Stok: {{ $device->stock }} unit</span>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between">
                         <span class="text-sm font-bold text-slate-950">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</span>
                     </div>
                     <a href="{{ route('login') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
@@ -119,14 +122,17 @@
                 <div class="w-[48%] rounded-[24px] bg-white p-4 shadow-lg shadow-sky-200/30 border border-sky-100 transition"
                      data-aos="fade-up" data-aos-delay="300">
                     <div class="mb-3 overflow-hidden rounded-[20px]">
-                        <img src="{{ $deviceImages[$thirdDevice->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $thirdDevice->name }}" class="h-28 w-full object-cover" />
+                        <img src="{{ $deviceImages[$thirdDevice->name] ?? asset('images/ps4.png') }}" alt="{{ $thirdDevice->name }}" class="h-28 w-full object-cover" />
                     </div>
                     <div class="mb-2">
                         <p class="text-xs uppercase tracking-[0.3em] text-blue-600">Konsol</p>
                         <h3 class="mt-1 text-lg font-bold text-slate-950">{{ $thirdDevice->name }}</h3>
                     </div>
                     <p class="text-slate-600 text-xs leading-5 line-clamp-2">{{ $thirdDevice->description }}</p>
-                    <div class="mt-3 flex items-center justify-between">
+                    <div class="mt-1 flex items-center gap-2">
+                        <span class="text-[10px] text-gray-400">Stok: {{ $thirdDevice->stock }} unit</span>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between">
                         <span class="text-sm font-bold text-slate-950">Rp {{ number_format($thirdDevice->price_per_hour,0,',','.') }}/jam</span>
                     </div>
                     <a href="{{ route('login') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
@@ -141,13 +147,17 @@
             <div class="rounded-[32px] bg-white p-6 shadow-lg shadow-sky-200/30 border border-sky-100 transition hover:-translate-y-1 tilt-card"
                  data-aos="fade-up" data-aos-delay="{{ $index * 150 }}">
                 <div class="mb-6 overflow-hidden rounded-[28px]">
+                    <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="h-40 w-full object-cover transition duration-500 hover:scale-105" />
                 </div>
                 <div class="mb-4 flex items-center justify-between text-slate-950">
                     <div>
                         <p class="text-sm uppercase tracking-[0.3em] text-blue-600">Konsol</p>
                         <h3 class="mt-2 text-2xl font-bold">{{ $device->name }}</h3>
                     </div>
-                    <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-950">Ready</span>
+                    <div class="flex items-center gap-2">
+                        <span class="inline-flex rounded-full bg-green-100 text-green-700 px-3 py-1 text-xs font-semibold">Ready</span>
+                        <span class="text-xs text-gray-400">{{ $device->stock }} unit</span>
+                    </div>
                 </div>
                 <p class="text-slate-600 text-sm leading-6">{{ $device->description }}</p>
                 <div class="mt-6 flex items-center justify-between text-slate-950">
@@ -156,66 +166,6 @@
                 </div>
             </div>
             @endforeach
-        </div>
-    </div>
-</section>
-
-<!-- Schedule Section -->
-<section id="reservation" class="py-16 md:py-20 px-4 bg-transparent">
-    <div class="container mx-auto">
-        <div class="max-w-3xl mx-auto text-center mb-10"
-             data-aos="fade-up">
-            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Atur Jadwal Mainmu</p>
-            <h2 class="mt-4 text-3xl md:text-4xl font-extrabold text-slate-950">Reservasi Mudah dalam 3 Langkah</h2>
-            <p class="mt-4 text-slate-600">Pilih konsol, tentukan waktu, lalu langsung datang untuk sesi gaming yang rapi dan terjadwal.</p>
-        </div>
-
-        {{-- MOBILE: 2 card + 1 card di tengah bawah --}}
-        <div class="md:hidden">
-            <div class="grid grid-cols-2 gap-3">
-                <div class="rounded-[24px] border border-blue-100 bg-white p-5 text-center shadow-sm"
-                     data-aos="zoom-in" data-aos-delay="0">
-                    <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-lg font-bold shadow-sm">1</div>
-                    <h3 class="text-base font-semibold text-slate-950">Pilih Konsol</h3>
-                    <p class="mt-2 text-slate-600 text-xs">Temukan konsol yang sesuai dengan style gamemu.</p>
-                </div>
-                <div class="rounded-[24px] border border-blue-100 bg-white p-5 text-center shadow-sm"
-                     data-aos="zoom-in" data-aos-delay="200">
-                    <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-lg font-bold shadow-sm">2</div>
-                    <h3 class="text-base font-semibold text-slate-950">Pilih Waktu</h3>
-                    <p class="mt-2 text-slate-600 text-xs">Atur slot main agar perjalananmu jadi lancar.</p>
-                </div>
-            </div>
-            <div class="flex justify-center mt-3">
-                <div class="w-[48%] rounded-[24px] border border-blue-100 bg-white p-5 text-center shadow-sm"
-                     data-aos="zoom-in" data-aos-delay="400">
-                    <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-lg font-bold shadow-sm">3</div>
-                    <h3 class="text-base font-semibold text-slate-950">Main Seru</h3>
-                    <p class="mt-2 text-slate-600 text-xs">Masuk, duduk, dan nikmati pengalaman gaming yang rapi.</p>
-                </div>
-            </div>
-        </div>
-
-        {{-- DESKTOP: 3 kolom --}}
-        <div class="hidden md:grid md:grid-cols-3 gap-6">
-            <div class="rounded-[32px] border border-blue-100 bg-white p-8 text-center shadow-sm tilt-card"
-                 data-aos="zoom-in" data-aos-delay="0">
-                <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl font-bold shadow-sm">1</div>
-                <h3 class="text-xl font-semibold text-slate-950">Pilih Konsol</h3>
-                <p class="mt-3 text-slate-600">Temukan PS3, PS4, atau PS5 yang sesuai dengan style gamemu.</p>
-            </div>
-            <div class="rounded-[32px] border border-blue-100 bg-white p-8 text-center shadow-sm tilt-card"
-                 data-aos="zoom-in" data-aos-delay="200">
-                <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl font-bold shadow-sm">2</div>
-                <h3 class="text-xl font-semibold text-slate-950">Pilih Waktu</h3>
-                <p class="mt-3 text-slate-600">Atur slot main agar perjalananmu jadi lancar.</p>
-            </div>
-            <div class="rounded-[32px] border border-blue-100 bg-white p-8 text-center shadow-sm tilt-card"
-                 data-aos="zoom-in" data-aos-delay="400">
-                <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl font-bold shadow-sm">3</div>
-                <h3 class="text-xl font-semibold text-slate-950">Main Seru</h3>
-                <p class="mt-3 text-slate-600">Masuk, duduk, dan nikmati pengalaman gaming yang rapi.</p>
-            </div>
         </div>
     </div>
 </section>

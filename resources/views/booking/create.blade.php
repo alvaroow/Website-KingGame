@@ -2,10 +2,6 @@
 
 @section('title', 'Form Booking - ' . $device->name)
 
-@section('content')
-<div class="bg-animated"></div>
-
-
 <section class="relative pt-20 md:pt-28 pb-16 px-3 md:px-4 bg-transparent min-h-screen">
     <div class="max-w-xl mx-auto">
         <div class="text-center mb-6 md:mb-8"
@@ -24,7 +20,7 @@
                 @csrf
                 <input type="hidden" name="device_id" value="{{ $device->id }}">
 
-                <div class="grid grid-cols-2 gap-2 md:gap-4 md:space-y-4">
+                <div class="grid grid-cols-2 gap-2 md:gap-4">
                     <div class="col-span-2">
                         <label class="block text-gray-700 text-xs md:text-sm font-medium mb-1">Nama Lengkap</label>
                         <input type="text" name="name" value="{{ old('name', auth()->user()->name) }}" required
@@ -45,16 +41,13 @@
 
                     <div>
                         <label class="block text-gray-700 text-xs md:text-sm font-medium mb-1">Tanggal</label>
-                        <input type="date" name="date" value="{{ old('date', date('Y-m-d')) }}" required min="{{ date('Y-m-d') }}"
+                        <input type="date" name="date" id="dateInput" value="{{ old('date', date('Y-m-d')) }}" required min="{{ date('Y-m-d') }}"
                                class="w-full px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-xl focus:border-blue-500 text-xs md:text-sm">
                     </div>
 
                     <div>
                         <label class="block text-gray-700 text-xs md:text-sm font-medium mb-1">Jam Mulai</label>
-                        <select name="start_time" required class="w-full px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-xl focus:border-blue-500 text-xs md:text-sm">
-                            @for($h=10; $h<=22; $h++)
-                                <option value="{{ sprintf('%02d:00', $h) }}">{{ sprintf('%02d:00', $h) }}</option>
-                            @endfor
+                        <select name="start_time" id="startTimeSelect" required class="w-full px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-xs md:text-sm">
                         </select>
                     </div>
 
@@ -77,9 +70,52 @@
                             Konfirmasi Booking
                         </button>
                     </div>
+
+                    <div class="col-span-2">
+                        <a href="{{ route('booking.choose') }}" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl transition text-center text-sm block">
+                            ← Kembali ke Pilih Konsol
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 </section>
-@endsection
+
+<script>
+function updateTimeOptions() {
+    const dateInput = document.getElementById('dateInput');
+    const timeSelect = document.getElementById('startTimeSelect');
+    const selectedDate = dateInput.value;
+    const today = new Date().toISOString().split('T')[0];
+    const now = new Date();
+    let currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    
+    // Jika hari ini, mulai dari jam sekarang + 1 (atau jam berikutnya)
+    if (selectedDate === today) {
+        if (currentMinute > 0) currentHour++;
+        if (currentHour < 10) currentHour = 10;
+    } else {
+        currentHour = 10; // Besok/selanjutnya: mulai jam 10
+    }
+    
+    // Clear options
+    timeSelect.innerHTML = '';
+    
+    // Tambah options
+    for (let h = currentHour; h <= 22; h++) {
+        const timeString = String(h).padStart(2, '0') + ':00';
+        const option = document.createElement('option');
+        option.value = timeString;
+        option.textContent = timeString;
+        timeSelect.appendChild(option);
+    }
+}
+
+// Jalankan saat halaman load
+document.addEventListener('DOMContentLoaded', updateTimeOptions);
+
+// Jalankan saat tanggal diubah
+document.getElementById('dateInput').addEventListener('change', updateTimeOptions);
+</script>
