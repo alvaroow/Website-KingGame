@@ -33,15 +33,53 @@
             </div>
         </div>
 
-        {{-- Menu --}}
-        <div class="flex justify-center mb-8">
-            <a href="{{ route('admin.devices.index') }}" class="bg-white rounded-2xl p-4 border border-gray-200 hover:border-blue-500 hover:shadow-lg transition text-center" data-aos="zoom-in" data-aos-delay="0">
-                <span class="text-xs md:text-sm font-semibold text-gray-700">Manajemen Konsol</span>
-            </a>
+        {{-- Manajemen Konsol --}}
+        <div class="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 shadow-sm mb-6" data-aos="fade-up" data-aos-duration="600">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-gray-900">Manajemen Konsol</h2>
+                <a href="{{ route('admin.devices.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-xs font-semibold transition">
+                    + Tambah
+                </a>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs md:text-sm">
+                    <thead class="bg-gray-50 text-gray-600">
+                        <tr>
+                            <th class="px-3 py-2">Nama</th>
+                            <th class="px-3 py-2">Harga/Jam</th>
+                            <th class="px-3 py-2">Stok</th>
+                            <th class="px-3 py-2">Status</th>
+                            <th class="px-3 py-2">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @foreach(\App\Models\Device::all() as $device)
+                        <tr>
+                            <td class="px-3 py-2 font-semibold">{{ $device->name }}</td>
+                            <td class="px-3 py-2">Rp {{ number_format($device->price_per_hour,0,',','.') }}</td>
+                            <td class="px-3 py-2">{{ $device->stock }} unit</td>
+                            <td class="px-3 py-2">
+                                <span class="px-2 py-1 text-xs rounded-full {{ $device->status == 'available' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+                                    {{ $device->status }}
+                                </span>
+                            </td>
+                            <td class="px-3 py-2 flex gap-2">
+                                <a href="{{ route('admin.devices.edit', $device) }}" class="text-blue-600 hover:text-blue-800 text-xs">Edit</a>
+                                <form action="{{ route('admin.devices.destroy', $device) }}" method="POST" onsubmit="return confirm('Hapus permanen?')">
+                                    @csrf @method('DELETE')
+                                    <button class="text-red-600 hover:text-red-800 text-xs">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         {{-- Tabel Booking --}}
-        <div class="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 shadow-sm" data-aos="fade-up" data-aos-duration="600">
+        <div class="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 shadow-sm" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
             <h2 class="text-lg font-bold text-gray-900 mb-4">Semua Booking</h2>
             
             <div class="overflow-x-auto">
