@@ -92,53 +92,31 @@
             ];
         @endphp
         
-        {{-- MOBILE: 2 card + 1 card di tengah bawah --}}
-        <div class="md:hidden">
-            <div class="grid grid-cols-2 gap-3">
-                @foreach($featuredDevices->take(2) as $index => $device)
-                <div class="rounded-[24px] bg-white p-4 shadow-lg shadow-sky-200/30 border border-sky-100 transition"
-                     data-aos="fade-up" data-aos-delay="{{ $index * 150 }}">
-                    <div class="mb-3 overflow-hidden rounded-[20px]">
-                        <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="h-28 w-full object-cover" />
-                    </div>
-                    <div class="mb-2">
-                        <p class="text-xs uppercase tracking-[0.3em] text-blue-600">Konsol</p>
-                        <h3 class="mt-1 text-lg font-bold text-slate-950">{{ $device->name }}</h3>
-                    </div>
-                    <p class="text-slate-600 text-xs leading-5 line-clamp-2">{{ $device->description }}</p>
-                    <div class="mt-1 flex items-center gap-2">
-                        <span class="text-[10px] text-gray-400">Stok: {{ $device->stock }} unit</span>
-                    </div>
-                    <div class="mt-2 flex items-center justify-between">
-                        <span class="text-sm font-bold text-slate-950">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</span>
-                    </div>
-                    <a href="{{ route('login') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
-                </div>
-                @endforeach
+        {{-- MOBILE: 2 kolom grid --}}
+<div class="md:hidden">
+    <div class="grid grid-cols-2 gap-3">
+        @foreach($featuredDevices as $index => $device)
+        <div class="rounded-[24px] bg-white p-4 shadow-lg shadow-sky-200/30 border border-sky-100 transition"
+             data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+            <div class="mb-3 overflow-hidden rounded-[20px]">
+                <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="h-28 w-full object-cover" />
             </div>
-            @if($featuredDevices->count() > 2)
-            @php $thirdDevice = $featuredDevices->skip(2)->first(); @endphp
-            <div class="flex justify-center mt-3">
-                <div class="w-[48%] rounded-[24px] bg-white p-4 shadow-lg shadow-sky-200/30 border border-sky-100 transition"
-                     data-aos="fade-up" data-aos-delay="300">
-                    <div class="mb-3 overflow-hidden rounded-[20px]">
-                        <img src="{{ $deviceImages[$thirdDevice->name] ?? asset('images/ps4.png') }}" alt="{{ $thirdDevice->name }}" class="h-28 w-full object-cover" />
-                    </div>
-                    <div class="mb-2">
-                        <p class="text-xs uppercase tracking-[0.3em] text-blue-600">Konsol</p>
-                        <h3 class="mt-1 text-lg font-bold text-slate-950">{{ $thirdDevice->name }}</h3>
-                    </div>
-                    <p class="text-slate-600 text-xs leading-5 line-clamp-2">{{ $thirdDevice->description }}</p>
-                    <div class="mt-1 flex items-center gap-2">
-                        <span class="text-[10px] text-gray-400">Stok: {{ $thirdDevice->stock }} unit</span>
-                    </div>
-                    <div class="mt-2 flex items-center justify-between">
-                        <span class="text-sm font-bold text-slate-950">Rp {{ number_format($thirdDevice->price_per_hour,0,',','.') }}/jam</span>
-                    </div>
-                    <a href="{{ route('login') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
-                </div>
+            <div class="mb-2">
+                <p class="text-xs uppercase tracking-[0.3em] text-blue-600">Konsol</p>
+                <h3 class="mt-1 text-lg font-bold text-slate-950">{{ $device->name }}</h3>
             </div>
-            @endif
+            <p class="text-slate-600 text-xs leading-5 line-clamp-2">{{ $device->description }}</p>
+            <div class="mt-1 flex items-center gap-2">
+                <span class="text-[10px] text-gray-400">Stok: {{ $device->stock }} unit</span>
+            </div>
+            <div class="mt-2 flex items-center justify-between">
+                <span class="text-sm font-bold text-slate-950">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</span>
+            </div>
+            <a href="{{ route('login') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
+        </div>
+        @endforeach
+    </div>
+</div>
         </div>
 
         {{-- DESKTOP: 3 kolom --}}

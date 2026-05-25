@@ -18,38 +18,23 @@
             ];
         @endphp
 
-        {{-- MOBILE: 2 card + 1 card di tengah bawah --}}
-        <div class="md:hidden">
-            <div class="grid grid-cols-2 gap-3">
-                @foreach($devices->take(2) as $index => $device)
-                <a href="{{ route('booking.create', $device) }}" 
-                   class="bg-white rounded-2xl p-4 border-2 border-gray-200 hover:border-blue-400 hover:shadow-lg transition text-center"
-                   data-aos="fade-up" data-aos-duration="600" data-aos-delay="{{ $index * 150 }}">
-                    <div class="h-24 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl mb-2 flex items-center justify-center overflow-hidden">
-                        <img src="{{ $deviceImages[$device->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $device->name }}" class="w-full h-full object-cover" />
-                    </div>
-                    <h3 class="text-sm font-bold text-gray-900">{{ $device->name }}</h3>
-                    <p class="text-[10px] text-gray-400 mt-0.5">Stok: {{ $device->stock }} unit</p>
-                    <p class="text-blue-600 font-semibold text-xs mt-1">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</p>
-                </a>
-                @endforeach
+        {{-- MOBILE: 2 kolom --}}
+<div class="md:hidden">
+    <div class="grid grid-cols-2 gap-3">
+        @foreach($devices as $index => $device)
+        <a href="{{ route('booking.create', $device) }}" 
+           class="bg-white rounded-2xl p-4 border-2 border-gray-200 hover:border-blue-400 hover:shadow-lg transition text-center"
+           data-aos="fade-up" data-aos-duration="600" data-aos-delay="{{ $index * 100 }}">
+            <div class="h-24 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl mb-2 flex items-center justify-center overflow-hidden">
+                <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="w-full h-full object-cover" />
             </div>
-            @if($devices->count() > 2)
-            @php $thirdDevice = $devices->skip(2)->first(); @endphp
-            <div class="flex justify-center mt-3">
-                <a href="{{ route('booking.create', $thirdDevice) }}" 
-                   class="w-1/2 bg-white rounded-2xl p-4 border-2 border-gray-200 hover:border-blue-400 hover:shadow-lg transition text-center"
-                   data-aos="fade-up" data-aos-duration="600" data-aos-delay="300">
-                    <div class="h-24 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl mb-2 flex items-center justify-center overflow-hidden">
-                        <img src="{{ $deviceImages[$thirdDevice->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $thirdDevice->name }}" class="w-full h-full object-cover" />
-                    </div>
-                    <h3 class="text-sm font-bold text-gray-900">{{ $thirdDevice->name }}</h3>
-                    <p class="text-[10px] text-gray-400 mt-0.5">Stok: {{ $thirdDevice->stock }} unit</p>
-                    <p class="text-blue-600 font-semibold text-xs mt-1">Rp {{ number_format($thirdDevice->price_per_hour,0,',','.') }}/jam</p>
-                </a>
-            </div>
-            @endif
-        </div>
+            <h3 class="text-sm font-bold text-gray-900">{{ $device->name }}</h3>
+            <p class="text-[10px] text-gray-400 mt-0.5">Stok: {{ $device->stock }} unit</p>
+            <p class="text-blue-600 font-semibold text-xs mt-1">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</p>
+        </a>
+        @endforeach
+    </div>
+</div>
 
         {{-- DESKTOP: 3 kolom --}}
         <div class="hidden md:grid md:grid-cols-3 gap-4">
@@ -58,7 +43,7 @@
                class="bg-white rounded-2xl p-6 border-2 border-gray-200 hover:border-blue-400 hover:shadow-lg transition text-center"
                data-aos="fade-up" data-aos-duration="600" data-aos-delay="{{ $index * 150 }}">
                 <div class="h-40 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
-                    <img src="{{ $deviceImages[$device->name] ?? 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $device->name }}" class="w-full h-full object-cover transition duration-500 hover:scale-105" />
+                    <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="w-full h-full object-cover transition duration-500 hover:scale-105" />
                 </div>
                 <div class="mb-3">
                     <p class="text-sm uppercase tracking-[0.3em] text-blue-600">Konsol</p>

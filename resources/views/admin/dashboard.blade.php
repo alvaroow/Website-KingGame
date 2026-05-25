@@ -34,49 +34,80 @@
         </div>
 
         {{-- Manajemen Konsol --}}
-        <div class="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 shadow-sm mb-6" data-aos="fade-up" data-aos-duration="600">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-900">Manajemen Konsol</h2>
-                <a href="{{ route('admin.devices.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-xs font-semibold transition">
-                    + Tambah
-                </a>
+<div class="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 shadow-sm mb-6" data-aos="fade-up" data-aos-duration="600" x-data="{ showForm: false }">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold text-gray-900">Manajemen Konsol</h2>
+        <button @click="showForm = !showForm" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-xs font-semibold transition">
+            <span x-show="!showForm">+ Tambah</span>
+            <span x-show="showForm">✕ Tutup</span>
+        </button>
+    </div>
+
+    {{-- Form Tambah --}}
+    <div x-show="showForm" class="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+        <form action="{{ route('admin.devices.store') }}" method="POST">
+            @csrf
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div>
+                    <label class="block text-xs font-medium mb-1">Nama</label>
+                    <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" placeholder="PS5">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium mb-1">Harga/Jam</label>
+                    <input type="number" name="price_per_hour" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" placeholder="50000">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium mb-1">Stok</label>
+                    <input type="number" name="stock" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" placeholder="7">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium mb-1">Status</label>
+                    <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs">
+                        <option value="available">Tersedia</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
+                </div>
             </div>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs md:text-sm">
-                    <thead class="bg-gray-50 text-gray-600">
-                        <tr>
-                            <th class="px-3 py-2">Nama</th>
-                            <th class="px-3 py-2">Harga/Jam</th>
-                            <th class="px-3 py-2">Stok</th>
-                            <th class="px-3 py-2">Status</th>
-                            <th class="px-3 py-2">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        @foreach(\App\Models\Device::all() as $device)
-                        <tr>
-                            <td class="px-3 py-2 font-semibold">{{ $device->name }}</td>
-                            <td class="px-3 py-2">Rp {{ number_format($device->price_per_hour,0,',','.') }}</td>
-                            <td class="px-3 py-2">{{ $device->stock }} unit</td>
-                            <td class="px-3 py-2">
-                                <span class="px-2 py-1 text-xs rounded-full {{ $device->status == 'available' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
-                                    {{ $device->status }}
-                                </span>
-                            </td>
-                            <td class="px-3 py-2 flex gap-2">
-                                <a href="{{ route('admin.devices.edit', $device) }}" class="text-blue-600 hover:text-blue-800 text-xs">Edit</a>
-                                <form action="{{ route('admin.devices.destroy', $device) }}" method="POST" onsubmit="return confirm('Hapus permanen?')">
-                                    @csrf @method('DELETE')
-                                    <button class="text-red-600 hover:text-red-800 text-xs">Hapus</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <button type="submit" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-xs font-semibold transition">Simpan</button>
+        </form>
+    </div>
+
+    {{-- Tabel Konsol --}}
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs md:text-sm">
+            <thead class="bg-gray-50 text-gray-600">
+                <tr>
+                    <th class="px-3 py-2">Nama</th>
+                    <th class="px-3 py-2">Harga/Jam</th>
+                    <th class="px-3 py-2">Stok</th>
+                    <th class="px-3 py-2">Status</th>
+                    <th class="px-3 py-2">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach(\App\Models\Device::all() as $device)
+                <tr>
+                    <td class="px-3 py-2 font-semibold">{{ $device->name }}</td>
+                    <td class="px-3 py-2">Rp {{ number_format($device->price_per_hour,0,',','.') }}</td>
+                    <td class="px-3 py-2">{{ $device->stock }} unit</td>
+                    <td class="px-3 py-2">
+                        <span class="px-2 py-1 text-xs rounded-full {{ $device->status == 'available' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+                            {{ $device->status }}
+                        </span>
+                    </td>
+                    <td class="px-3 py-2 flex gap-2">
+                        <a href="{{ route('admin.devices.edit', $device) }}" class="text-blue-600 hover:text-blue-800 text-xs">Edit</a>
+                        <form action="{{ route('admin.devices.destroy', $device) }}" method="POST" onsubmit="return confirm('Hapus permanen?')">
+                            @csrf @method('DELETE')
+                            <button class="text-red-600 hover:text-red-800 text-xs">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 
         {{-- Tabel Booking --}}
         <div class="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 shadow-sm" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
