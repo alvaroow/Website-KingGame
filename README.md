@@ -59,7 +59,6 @@ Website rental PlayStation (PS3, PS4, PS5) berbasis **Laravel 13**
 - Dashboard Admin (Statistik + Manajemen)
 - CRUD Konsol (Tambah, Edit, Hapus)
 - Lihat semua booking
-- Kelola stok konsol
 - Responsive (Mobile, Tablet, Desktop)
 
 
