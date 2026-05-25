@@ -32,55 +32,55 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 // ROUTES YANG BUTUH LOGIN
 // ==========================================
 Route::middleware(['auth'])->group(function () {
-    
 
-// Dashboard
-Route::get('/dashboard', function () {
-    $user = auth()->user();
-    
-    $bookings = Booking::where('user_id', $user->id)
-        ->orWhere('email', $user->email)
-        ->latest()
-        ->get();
-    
-    $now = Carbon::now();
-    
-    foreach ($bookings as $booking) {
-        // Ambil date, start_time, end_time dengan aman
-        $dateString = $booking->date instanceof \Carbon\Carbon 
-            ? $booking->date->format('Y-m-d') 
-            : $booking->date;
+    // Dashboard
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
         
-        $startString = $booking->start_time instanceof \Carbon\Carbon 
-            ? $booking->start_time->format('H:i:s') 
-            : $booking->start_time;
+        $bookings = Booking::where('user_id', $user->id)
+            ->orWhere('email', $user->email)
+            ->latest()
+            ->get();
+        
+        $now = Carbon::now();
+        
+        foreach ($bookings as $booking) {
+            // Ambil date, start_time, end_time dengan aman
+            $dateString = $booking->date instanceof \Carbon\Carbon 
+                ? $booking->date->format('Y-m-d') 
+                : \Carbon\Carbon::parse($booking->date)->format('Y-m-d');
             
-        $endString = $booking->end_time instanceof \Carbon\Carbon 
-            ? $booking->end_time->format('H:i:s') 
-            : $booking->end_time;
-        
-        $startDateTime = Carbon::parse($dateString . ' ' . $startString);
-        $endDateTime = Carbon::parse($dateString . ' ' . $endString);
-        
-        // Cek apakah sedang berlangsung
-        if ($booking->status == 'pending' && $now->between($startDateTime, $endDateTime)) {
-            $booking->update(['status' => 'active']);
+            $startString = $booking->start_time instanceof \Carbon\Carbon 
+                ? $booking->start_time->format('H:i:s') 
+                : $booking->start_time;
+                
+            $endString = $booking->end_time instanceof \Carbon\Carbon 
+                ? $booking->end_time->format('H:i:s') 
+                : $booking->end_time;
+            
+            $startDateTime = Carbon::parse($dateString . ' ' . $startString);
+            $endDateTime = Carbon::parse($dateString . ' ' . $endString);
+            
+            // Cek apakah sedang berlangsung
+            if ($booking->status == 'pending' && $now->between($startDateTime, $endDateTime)) {
+                $booking->update(['status' => 'active']);
+            }
+            
+            // Cek apakah sudah selesai
+            if (in_array($booking->status, ['pending', 'active']) && $endDateTime->isPast()) {
+                $booking->update(['status' => 'completed']);
+            }
         }
         
-        // Cek apakah sudah selesai
-        if (in_array($booking->status, ['pending', 'active']) && $endDateTime->isPast()) {
-            $booking->update(['status' => 'completed']);
-        }
-    }
-    
-    // Refresh data
-    $bookings = Booking::where('user_id', $user->id)
-        ->orWhere('email', $user->email)
-        ->latest()
-        ->get();
-    
-    return view('dashboard', compact('user', 'bookings'));
-})->name('dashboard');
+        // Refresh data
+        $bookings = Booking::where('user_id', $user->id)
+            ->orWhere('email', $user->email)
+            ->latest()
+            ->get();
+        
+        return view('dashboard', compact('user', 'bookings'));
+    })->name('dashboard');
+
     // Pilih Konsol
     Route::get('/booking', function () {
         $devices = Device::where('status', 'available')->get();
@@ -188,7 +188,6 @@ Route::get('/dashboard', function () {
         return redirect('/dashboard')->with('success', 'Booking dibatalkan!');
     })->name('booking.cancel');
 
-
     // Profile
     Route::get('/profile', function () {
         return view('profile.edit', ['user' => auth()->user()]);
@@ -212,51 +211,25 @@ Route::middleware(['auth', 'admin'])
 
     // Dashboard Admin + Manajemen Konsol
     Route::get('/dashboard', function () {
-
         $totalBookings = Booking::count();
         $totalDevices = Device::count();
-        $totalUsers = \App\Models\User::where(
-            'is_admin',
-            false
-        )->count();
-
-        $bookings = Booking::with('device')
-            ->latest()
-            ->paginate(10);
-
-        return view(
-            'admin.dashboard',
-            compact(
-                'totalBookings',
-                'totalDevices',
-                'totalUsers',
-                'bookings'
-            )
-        );
-
+        $totalUsers = \App\Models\User::where('is_admin', false)->count();
+        $bookings = Booking::with('device')->latest()->paginate(10);
+        return view('admin.dashboard', compact('totalBookings', 'totalDevices', 'totalUsers', 'bookings'));
     })->name('dashboard');
-
 
     // Redirect /admin/devices -> dashboard
     Route::get('/devices', function () {
-        return redirect()
-            ->route('admin.dashboard');
+        return redirect()->route('admin.dashboard');
     })->name('devices.index');
-
 
     // Form tambah konsol
     Route::get('/devices/create', function () {
-        return view(
-            'admin.devices.create'
-        );
+        return view('admin.devices.create');
     })->name('devices.create');
 
-
     // Simpan konsol
-    Route::post('/devices', function (
-        Request $request
-    ) {
-
+    Route::post('/devices', function (Request $request) {
         $request->validate([
             'name' => 'required|string|max:255',
             'price_per_hour' => 'required|integer|min:0',
@@ -269,48 +242,21 @@ Route::middleware(['auth', 'admin'])
             'name' => $request->name,
             'price_per_hour' => $request->price_per_hour,
             'stock' => $request->stock,
-            'status' => $request->status
-                ?? 'available',
+            'status' => $request->status ?? 'available',
             'description' => $request->description
         ]);
 
-        return redirect()
-            ->route(
-                'admin.dashboard'
-            )
-            ->with(
-                'success',
-                'Konsol berhasil ditambahkan!'
-            );
-
+        return redirect()->route('admin.dashboard')->with('success', 'Konsol berhasil ditambahkan!');
     })->name('devices.store');
 
-
     // Form edit
-    Route::get(
-        '/devices/{device}/edit',
-        function ($device) {
-
-        $device = Device::findOrFail(
-            $device
-        );
-
-        return view(
-            'admin.devices.edit',
-            compact('device')
-        );
-
+    Route::get('/devices/{device}/edit', function ($device) {
+        $device = Device::findOrFail($device);
+        return view('admin.devices.edit', compact('device'));
     })->name('devices.edit');
 
-
     // Update
-    Route::put(
-        '/devices/{device}',
-        function (
-            Request $request,
-            $device
-        ) {
-
+    Route::put('/devices/{device}', function (Request $request, $device) {
         $request->validate([
             'name' => 'required|string|max:255',
             'price_per_hour' => 'required|integer|min:0',
@@ -319,10 +265,7 @@ Route::middleware(['auth', 'admin'])
             'description' => 'nullable|string'
         ]);
 
-        $device = Device::findOrFail(
-            $device
-        );
-
+        $device = Device::findOrFail($device);
         $device->update([
             'name' => $request->name,
             'price_per_hour' => $request->price_per_hour,
@@ -331,36 +274,12 @@ Route::middleware(['auth', 'admin'])
             'description' => $request->description
         ]);
 
-        return redirect()
-            ->route(
-                'admin.dashboard'
-            )
-            ->with(
-                'success',
-                'Konsol berhasil diupdate!'
-            );
-
+        return redirect()->route('admin.dashboard')->with('success', 'Konsol berhasil diupdate!');
     })->name('devices.update');
 
-
     // Hapus
-    Route::delete(
-        '/devices/{device}',
-        function ($device) {
-
-        Device::findOrFail(
-            $device
-        )->delete();
-
-        return redirect()
-            ->route(
-                'admin.dashboard'
-            )
-            ->with(
-                'success',
-                'Konsol berhasil dihapus!'
-            );
-
+    Route::delete('/devices/{device}', function ($device) {
+        Device::findOrFail($device)->delete();
+        return redirect()->route('admin.dashboard')->with('success', 'Konsol berhasil dihapus!');
     })->name('devices.destroy');
-
 });
