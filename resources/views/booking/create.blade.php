@@ -2,6 +2,7 @@
 
 @section('title', 'Form Booking - ' . $device->name)
 
+@section('content')
 <section class="relative pt-20 md:pt-28 pb-16 px-3 md:px-4 bg-transparent min-h-screen">
     <div class="max-w-xl mx-auto">
         <div class="text-center mb-6 md:mb-8"
@@ -72,6 +73,12 @@
                     </div>
 
                     <div class="col-span-2">
+                        <p class="text-xs text-gray-400 text-center">
+                            Pembayaran dilakukan di tempat saat datang.
+                        </p>
+                    </div>
+
+                    <div class="col-span-2 mt-2">
                         <a href="{{ route('booking.choose') }}" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl transition text-center text-sm block">
                             ← Kembali ke Pilih Konsol
                         </a>
@@ -92,18 +99,15 @@ function updateTimeOptions() {
     let currentHour = now.getHours();
     const currentMinute = now.getMinutes();
     
-    // Jika hari ini, mulai dari jam sekarang + 1 (atau jam berikutnya)
     if (selectedDate === today) {
         if (currentMinute > 0) currentHour++;
         if (currentHour < 10) currentHour = 10;
     } else {
-        currentHour = 10; // Besok/selanjutnya: mulai jam 10
+        currentHour = 10;
     }
     
-    // Clear options
     timeSelect.innerHTML = '';
     
-    // Tambah options
     for (let h = currentHour; h <= 22; h++) {
         const timeString = String(h).padStart(2, '0') + ':00';
         const option = document.createElement('option');
@@ -113,9 +117,7 @@ function updateTimeOptions() {
     }
 }
 
-// Jalankan saat halaman load
 document.addEventListener('DOMContentLoaded', updateTimeOptions);
-
-// Jalankan saat tanggal diubah
 document.getElementById('dateInput').addEventListener('change', updateTimeOptions);
 </script>
+@endsection

@@ -9,7 +9,6 @@
     
     <div class="container mx-auto relative z-10">
         <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-            <!-- Konten Kiri (Text) -->
             <div class="lg:w-1/2 space-y-6 lg:pr-4"
                  data-aos="fade-right" data-aos-duration="800">
                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-950">
@@ -27,31 +26,24 @@
                     </a>
                 </div>
                 <div class="grid grid-cols-3 gap-4 text-center text-sm text-slate-700">
-                    <div class="rounded-3xl bg-white/80 backdrop-blur-sm px-4 py-4 shadow-sm"
-                         data-aos="zoom-in" data-aos-delay="200">
+                    <div class="rounded-3xl bg-white/80 backdrop-blur-sm px-4 py-4 shadow-sm" data-aos="zoom-in" data-aos-delay="200">
                         <p class="text-2xl font-bold text-slate-950 counter" data-target="20">0+</p>
                         <p class="mt-1">Game</p>
                     </div>
-                    <div class="rounded-3xl bg-white/80 backdrop-blur-sm px-4 py-4 shadow-sm"
-                         data-aos="zoom-in" data-aos-delay="400">
+                    <div class="rounded-3xl bg-white/80 backdrop-blur-sm px-4 py-4 shadow-sm" data-aos="zoom-in" data-aos-delay="400">
                         <p class="text-2xl font-bold text-slate-950">3</p>
                         <p class="mt-1">Konsol</p>
                     </div>
-                    <div class="rounded-3xl bg-white/80 backdrop-blur-sm px-4 py-4 shadow-sm"
-                         data-aos="zoom-in" data-aos-delay="600">
+                    <div class="rounded-3xl bg-white/80 backdrop-blur-sm px-4 py-4 shadow-sm" data-aos="zoom-in" data-aos-delay="600">
                         <p class="text-2xl font-bold text-slate-950">4.9</p>
                         <p class="mt-1">Rating</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Gambar Kanan - HANYA DESKTOP -->
-            <div class="hidden lg:block lg:w-1/2 relative min-h-[500px]"
-                 data-aos="fade-left" data-aos-duration="800">
+            <div class="hidden lg:block lg:w-1/2 relative min-h-[500px]" data-aos="fade-left" data-aos-duration="800">
                 <div class="relative overflow-hidden rounded-2xl bg-white shadow-xl w-[72%] ml-auto lg:ml-0 lg:mr-0 lg:-mt-8 tilt-card">
-                    <img src="{{ asset('images/hero.png') }}" 
-                         alt="PlayStation lounge" 
-                         class="w-full h-48 sm:h-56 object-cover transition duration-500 hover:scale-105" />
+                    <img src="{{ asset('images/hero.png') }}" alt="PlayStation lounge" class="w-full h-48 sm:h-56 object-cover transition duration-500 hover:scale-105" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
                     <div class="absolute bottom-3 left-4 text-white">
                         <p class="text-xs uppercase tracking-[0.25em] text-sky-200">PlayStation Spot</p>
@@ -59,9 +51,7 @@
                     </div>
                 </div>
                 <div class="relative overflow-hidden rounded-2xl bg-white shadow-xl w-[72%] mt-8 ml-auto lg:ml-auto lg:mr-0 lg:mt-6 lg:translate-x-2 tilt-card">
-                    <img src="{{ asset('images/ps4.png') }}" 
-                         alt="PlayStation controller" 
-                         class="w-full h-48 sm:h-56 object-cover transition duration-500 hover:scale-105" />
+                    <img src="{{ asset('images/ps4.png') }}" alt="PlayStation controller" class="w-full h-48 sm:h-56 object-cover transition duration-500 hover:scale-105" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
                     <div class="absolute bottom-3 left-4 text-white">
                         <p class="text-xs uppercase tracking-[0.25em] text-sky-200">Konsol PREMIUM</p>
@@ -76,8 +66,7 @@
 <!-- Konsol Section -->
 <section id="devices" class="py-16 md:py-20 px-4 bg-transparent">
     <div class="container mx-auto">
-        <div class="max-w-3xl mx-auto text-center mb-10"
-             data-aos="fade-up">
+        <div class="max-w-3xl mx-auto text-center mb-10" data-aos="fade-up">
             <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Konsol Pilihan</p>
             <h2 class="mt-4 text-3xl md:text-4xl font-extrabold text-slate-950">Pilih Konsol PlayStation Sesuai Gaya Gamemu</h2>
             <p class="mt-4 text-slate-600">PS3, PS4, PS5 tersedia dengan setup bersih dan profesional untuk sesi santai atau kompetitif.</p>
@@ -92,38 +81,32 @@
             ];
         @endphp
         
-        {{-- MOBILE: 2 kolom grid --}}
-<div class="md:hidden">
-    <div class="grid grid-cols-2 gap-3">
-        @foreach($featuredDevices as $index => $device)
-        <div class="rounded-[24px] bg-white p-4 shadow-lg shadow-sky-200/30 border border-sky-100 transition"
-             data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
-            <div class="mb-3 overflow-hidden rounded-[20px]">
-                <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="h-28 w-full object-cover" />
+        {{-- MOBILE --}}
+        <div class="md:hidden">
+            <div class="grid grid-cols-2 gap-3">
+                @foreach($featuredDevices as $index => $device)
+                <div class="rounded-[24px] bg-white p-4 shadow-lg shadow-sky-200/30 border border-sky-100 transition" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                    <div class="mb-3 overflow-hidden rounded-[20px]">
+                        <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="h-28 w-full object-cover" />
+                    </div>
+                    <div class="mb-2">
+                        <p class="text-xs uppercase tracking-[0.3em] text-blue-600">Konsol</p>
+                        <h3 class="mt-1 text-lg font-bold text-slate-950">{{ $device->name }}</h3>
+                    </div>
+                    <p class="text-slate-600 text-xs leading-5 line-clamp-2">{{ $device->description }}</p>
+                    <div class="mt-2 flex items-center justify-between">
+                        <span class="text-sm font-bold text-slate-950">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</span>
+                    </div>
+                    <a href="{{ route('login') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
+                </div>
+                @endforeach
             </div>
-            <div class="mb-2">
-                <p class="text-xs uppercase tracking-[0.3em] text-blue-600">Konsol</p>
-                <h3 class="mt-1 text-lg font-bold text-slate-950">{{ $device->name }}</h3>
-            </div>
-            <p class="text-slate-600 text-xs leading-5 line-clamp-2">{{ $device->description }}</p>
-            <div class="mt-1 flex items-center gap-2">
-                <span class="text-[10px] text-gray-400">Stok: {{ $device->stock }} unit</span>
-            </div>
-            <div class="mt-2 flex items-center justify-between">
-                <span class="text-sm font-bold text-slate-950">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</span>
-            </div>
-            <a href="{{ route('login') }}" class="mt-3 block w-full rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold text-white text-center transition hover:bg-blue-700">Booking</a>
-        </div>
-        @endforeach
-    </div>
-</div>
         </div>
 
-        {{-- DESKTOP: 3 kolom --}}
+        {{-- DESKTOP --}}
         <div class="hidden md:grid md:grid-cols-3 gap-6">
             @foreach($featuredDevices as $index => $device)
-            <div class="rounded-[32px] bg-white p-6 shadow-lg shadow-sky-200/30 border border-sky-100 transition hover:-translate-y-1 tilt-card"
-                 data-aos="fade-up" data-aos-delay="{{ $index * 150 }}">
+            <div class="rounded-[32px] bg-white p-6 shadow-lg shadow-sky-200/30 border border-sky-100 transition hover:-translate-y-1 tilt-card" data-aos="fade-up" data-aos-delay="{{ $index * 150 }}">
                 <div class="mb-6 overflow-hidden rounded-[28px]">
                     <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="h-40 w-full object-cover transition duration-500 hover:scale-105" />
                 </div>
@@ -132,10 +115,7 @@
                         <p class="text-sm uppercase tracking-[0.3em] text-blue-600">Konsol</p>
                         <h3 class="mt-2 text-2xl font-bold">{{ $device->name }}</h3>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="inline-flex rounded-full bg-green-100 text-green-700 px-3 py-1 text-xs font-semibold">Ready</span>
-                        <span class="text-xs text-gray-400">{{ $device->stock }} unit</span>
-                    </div>
+                    <span class="inline-flex rounded-full bg-green-100 text-green-700 px-3 py-1 text-xs font-semibold">Ready</span>
                 </div>
                 <p class="text-slate-600 text-sm leading-6">{{ $device->description }}</p>
                 <div class="mt-6 flex items-center justify-between text-slate-950">
@@ -151,8 +131,7 @@
 <!-- Games Section -->
 <section id="games" class="py-12 md:py-20 px-3 md:px-4 bg-transparent">
     <div class="container mx-auto">
-        <div class="max-w-3xl mx-auto text-center mb-6 md:mb-10"
-             data-aos="fade-up">
+        <div class="max-w-3xl mx-auto text-center mb-6 md:mb-10" data-aos="fade-up">
             <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Katalog Game</p>
             <h2 class="mt-2 md:mt-4 text-2xl md:text-4xl font-extrabold text-slate-950">Ragam Game PlayStation</h2>
             <p class="mt-2 md:mt-4 text-slate-600 text-xs md:text-base">Dari olahraga sampai aksi petualangan — koleksi kami disusun rapi untuk memudahkan pilihanmu.</p>
@@ -168,11 +147,9 @@
             ];
         @endphp
         
-        {{-- MOBILE: 2 kolom compact --}}
         <div class="md:hidden grid grid-cols-2 gap-2">
             @foreach($games as $title => $image)
-            <div class="overflow-hidden rounded-2xl bg-white shadow-md shadow-blue-200/20 transition"
-                 data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
+            <div class="overflow-hidden rounded-2xl bg-white shadow-md shadow-blue-200/20 transition" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
                 <div class="relative h-28 overflow-hidden">
                     <img src="{{ $image }}" alt="{{ $title }}" class="h-full w-full object-cover" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
@@ -188,11 +165,9 @@
             @endforeach
         </div>
 
-        {{-- DESKTOP: 3 kolom --}}
         <div class="hidden md:grid md:gap-5 md:grid-cols-2 lg:grid-cols-3">
             @foreach($games as $title => $image)
-            <div class="overflow-hidden rounded-[32px] bg-white shadow-lg shadow-blue-200/30 transition hover:-translate-y-1 tilt-card"
-                 data-aos="zoom-in" data-aos-delay="{{ $loop->index * 100 }}">
+            <div class="overflow-hidden rounded-[32px] bg-white shadow-lg shadow-blue-200/30 transition hover:-translate-y-1 tilt-card" data-aos="zoom-in" data-aos-delay="{{ $loop->index * 100 }}">
                 <div class="relative h-44 overflow-hidden">
                     <img src="{{ $image }}" alt="{{ $title }}" class="h-full w-full object-cover transition duration-500 hover:scale-105" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
@@ -213,8 +188,7 @@
 <!-- Testimonials Section -->
 <section id="testimonials" class="py-16 md:py-20 px-4 bg-transparent">
     <div class="container mx-auto">
-        <div class="max-w-3xl mx-auto text-center mb-10"
-             data-aos="fade-up">
+        <div class="max-w-3xl mx-auto text-center mb-10" data-aos="fade-up">
             <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Testimoni</p>
             <h2 class="mt-4 text-3xl md:text-4xl font-extrabold text-slate-950">Apa Kata Mereka tentang KingGame</h2>
             <p class="mt-4 text-slate-600">Dengar langsung pengalaman mereka yang sudah main di sini.</p>
@@ -229,8 +203,7 @@
         @endphp
         <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-5">
             @foreach($testimonials as $index => $t)
-            <div class="rounded-[24px] md:rounded-[32px] border border-blue-100 bg-white p-4 md:p-6 shadow-sm transition hover:-translate-y-1 tilt-card"
-                 data-aos="flip-left" data-aos-delay="{{ $index * 200 }}">
+            <div class="rounded-[24px] md:rounded-[32px] border border-blue-100 bg-white p-4 md:p-6 shadow-sm transition hover:-translate-y-1 tilt-card" data-aos="flip-left" data-aos-delay="{{ $index * 200 }}">
                 <div class="mb-3 md:mb-4 flex h-10 w-10 md:h-14 md:w-14 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-base md:text-lg font-bold shadow-sm mx-auto">{{ $t['initial'] }}</div>
                 <h4 class="font-semibold text-slate-950 text-sm md:text-lg text-center">{{ $t['name'] }}</h4>
                 <div class="mt-1 md:mt-2 flex items-center justify-center gap-1 text-yellow-400 text-xs md:text-sm animate-bounce-in">★★★★★</div>
@@ -242,8 +215,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-16 md:py-20 px-4 bg-transparent"
-         data-aos="fade-up" data-aos-duration="1000">
+<section class="py-16 md:py-20 px-4 bg-transparent" data-aos="fade-up" data-aos-duration="1000">
     <div class="container mx-auto text-center">
         <h2 class="text-3xl md:text-4xl font-extrabold text-black">Siap Reservasi Sekarang?</h2>
         <p class="mx-auto mt-4 max-w-2xl text-black/90">Booking slotmu sekarang dan nikmati sesi PlayStationmu dengan nyaman dan menyenangkan.</p>

@@ -18,14 +18,14 @@
             <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">{{ session('success') }}</div>
         @endif
 
-{{-- Quick Actions --}}
-<div class="flex justify-center mb-8">
-    <a href="{{ route('booking.choose') }}" 
-       class="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl px-8 py-4 shadow-lg transition text-center"
-       data-aos="zoom-in" data-aos-delay="0">
-        <span class="text-sm md:text-base font-semibold">Booking Sekarang</span>
-    </a>
-</div>
+        {{-- Quick Actions --}}
+        <div class="flex justify-center mb-8">
+            <a href="{{ route('booking.choose') }}" 
+               class="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl px-8 py-4 shadow-lg transition text-center"
+               data-aos="zoom-in" data-aos-delay="0">
+                <span class="text-sm md:text-base font-semibold">Booking Sekarang</span>
+            </a>
+        </div>
 
         {{-- Riwayat Booking --}}
         <div class="bg-white rounded-2xl p-4 md:p-6 border border-gray-200 shadow-sm"
@@ -45,13 +45,15 @@
                                 </p>
                                 <p class="text-xs text-gray-400 mt-1">Kode: {{ $booking->booking_code }}</p>
                                 <p class="text-sm font-medium mt-1">Rp {{ number_format($booking->total_price,0,',','.') }}</p>
+                                <p class="text-xs text-gray-400 mt-1">Bayar di tempat</p>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="px-2 py-1 text-xs rounded-full 
-                                    @if($booking->status == 'completed') bg-green-100 text-green-700
+                                    @if($booking->status == 'active') bg-blue-100 text-blue-700
+                                    @elseif($booking->status == 'completed') bg-green-100 text-green-700
                                     @elseif($booking->status == 'pending') bg-yellow-100 text-yellow-700
                                     @elseif($booking->status == 'cancelled') bg-red-100 text-red-700
-                                    @else bg-blue-100 text-blue-700 @endif">
+                                    @endif">
                                     {{ ucfirst($booking->status) }}
                                 </span>
                                 @if($booking->status == 'pending')

@@ -2,6 +2,7 @@
 
 @section('title', 'Pilih Konsol')
 
+@section('content')
 <section class="relative pt-24 md:pt-28 pb-16 px-4 bg-transparent min-h-screen">
     <div class="max-w-4xl mx-auto">
         <div class="text-center mb-8"
@@ -18,25 +19,24 @@
             ];
         @endphp
 
-        {{-- MOBILE: 2 kolom --}}
-<div class="md:hidden">
-    <div class="grid grid-cols-2 gap-3">
-        @foreach($devices as $index => $device)
-        <a href="{{ route('booking.create', $device) }}" 
-           class="bg-white rounded-2xl p-4 border-2 border-gray-200 hover:border-blue-400 hover:shadow-lg transition text-center"
-           data-aos="fade-up" data-aos-duration="600" data-aos-delay="{{ $index * 100 }}">
-            <div class="h-24 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl mb-2 flex items-center justify-center overflow-hidden">
-                <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="w-full h-full object-cover" />
+        {{-- MOBILE --}}
+        <div class="md:hidden">
+            <div class="grid grid-cols-2 gap-3">
+                @foreach($devices as $index => $device)
+                <a href="{{ route('booking.create', $device) }}" 
+                   class="bg-white rounded-2xl p-4 border-2 border-gray-200 hover:border-blue-400 hover:shadow-lg transition text-center"
+                   data-aos="fade-up" data-aos-duration="600" data-aos-delay="{{ $index * 100 }}">
+                    <div class="h-24 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl mb-2 flex items-center justify-center overflow-hidden">
+                        <img src="{{ $deviceImages[$device->name] ?? asset('images/ps4.png') }}" alt="{{ $device->name }}" class="w-full h-full object-cover" />
+                    </div>
+                    <h3 class="text-sm font-bold text-gray-900">{{ $device->name }}</h3>
+                    <p class="text-blue-600 font-semibold text-xs mt-1">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</p>
+                </a>
+                @endforeach
             </div>
-            <h3 class="text-sm font-bold text-gray-900">{{ $device->name }}</h3>
-            <p class="text-[10px] text-gray-400 mt-0.5">Stok: {{ $device->stock }} unit</p>
-            <p class="text-blue-600 font-semibold text-xs mt-1">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</p>
-        </a>
-        @endforeach
-    </div>
-</div>
+        </div>
 
-        {{-- DESKTOP: 3 kolom --}}
+        {{-- DESKTOP --}}
         <div class="hidden md:grid md:grid-cols-3 gap-4">
             @foreach($devices as $index => $device)
             <a href="{{ route('booking.create', $device) }}" 
@@ -50,9 +50,6 @@
                     <h3 class="mt-2 text-2xl font-bold text-gray-900">{{ $device->name }}</h3>
                 </div>
                 <p class="text-gray-500 text-xs mt-1">{{ $device->description }}</p>
-                <div class="flex items-center justify-center gap-2 mt-2">
-                    <span class="text-xs text-gray-400">Stok: {{ $device->stock }} unit</span>
-                </div>
                 <p class="text-blue-600 font-semibold text-xl mt-3">Rp {{ number_format($device->price_per_hour,0,',','.') }}/jam</p>
                 <span class="mt-3 inline-block bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-semibold">Pilih</span>
             </a>
@@ -64,3 +61,4 @@
         </div>
     </div>
 </section>
+@endsection

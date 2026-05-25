@@ -82,9 +82,10 @@
                 <div class="hidden md:flex items-center space-x-3">
                     @auth
                         @if(auth()->user()->is_admin)
-                            <a href="{{ route('admin.dashboard') }}" class="text-gray-600 hover:text-blue-600 text-sm font-medium">Admin</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-gray-600 hover:text-blue-600 text-sm font-medium">Dashboard</a>
+                        @else
+                            <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-blue-600 text-sm font-medium">Dashboard</a>
                         @endif
-                        <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-blue-600 text-sm font-medium">Dashboard</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium transition">Keluar</button>
@@ -111,9 +112,10 @@
                 <div class="px-2 pt-3 space-y-1">
                     @auth
                         @if(auth()->user()->is_admin)
-                            <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg text-sm font-medium">Admin Dashboard</a>
+                            <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg text-sm font-medium">Dashboard</a>
+                        @else
+                            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg text-sm font-medium">Dashboard</a>
                         @endif
-                        <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg text-sm font-medium">Dashboard</a>
                         <hr class="my-2">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
